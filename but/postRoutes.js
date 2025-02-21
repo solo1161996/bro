@@ -39,6 +39,7 @@ postRoutes.route("/posts").post(verifyToken, async (request, response) => {
         content: request.body.content ,
         dateCreated: request.body.dateCreated,
         author: request.body.user._id,
+        imageId: request.body.imageId
     }
     let data = await db.collection("posts").insertOne(mongoObject)
     response.json(data) 
@@ -53,7 +54,9 @@ postRoutes.route("/posts/:id").put(verifyToken, async (request, response) => {
         title: request.body.title,
         description: request.body.description ,
         content: request.body.content ,
-        dateCreated: request.body.dateCreated 
+        dateCreated: request.body.dateCreated,
+        imageId: request.body.imageId
+
       }
     }
 
@@ -71,7 +74,7 @@ postRoutes.route("/posts/:id").put(verifyToken, async (request, response) => {
 
 
      function verifyToken(request, response, next) {
-            const authHeaders = request.headers["authorization"]
+            const authHeaders = request.headers["Authorization"]
             const token = authHeaders && authHeaders.split(' ')[1]
              if (!token) {
                 return response.status(401).json({message: "Authentication token missing"})
